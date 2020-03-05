@@ -14,15 +14,14 @@ class Example(QWidget):
         self.x, self.y = 37.530887, 55.703118
         self.m, self.n = 0.002, 0.002
         self.style_map = 'map'
+        self.marks = []
         self.getImage()
         self.initUI()
-        self.marks = ''
-
 
     def getImage(self):
         map_request = \
             f"http://static-maps.yandex.ru/1.x/?ll=" \
-            f"{self.x},{self.y}&spn={self.m},{self.n}&l={self.style_map}&pt={self.x},{self.y}"
+            f"{self.x},{self.y}&spn={self.m},{self.n}&l={self.style_map}&pt={'~'.join(self.marks)}"
         response = requests.get(map_request)
 
         if not response:
@@ -92,6 +91,8 @@ class Example(QWidget):
                 self.x = pos[0]
                 self.y = pos[1]
                 print(self.x, self.y)
+                self.marks.append(f'{self.x},{self.y}')
+                print(self.marks)
                 self.update_map()
             else:
                 print('error')
